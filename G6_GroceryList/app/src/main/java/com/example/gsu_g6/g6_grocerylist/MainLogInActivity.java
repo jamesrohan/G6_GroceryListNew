@@ -24,6 +24,8 @@ public class MainLogInActivity extends AppCompatActivity {
     private static final String database_pass = "Rohan2017!";
     private TextView getData;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,25 +88,29 @@ public class MainLogInActivity extends AppCompatActivity {
         //references: http://developer.android.com/reference/android/os/AsyncTask.html
         //            https://www.youtube.com/watch?v=N0FLT5NdSNU (about the 7 min mark)
         private String queryResult;
+        private Connection dbConnection;
         protected Void doInBackground(Void... arg0)  {
+
+
             try {
                 queryResult = "Database connection success\n";
 
                 Class.forName("com.mysql.jdbc.Driver");
-                Connection con = DriverManager.getConnection(database_url, database_user, database_pass);
-                String queryString = "select * from mobileappteam6.users";
+                dbConnection = DriverManager.getConnection(database_url, database_user, database_pass); //con
+                //String queryString = "select password from mobileappteam6.users where email"+userInputPassword;
 
-                Statement st = con.createStatement();
-                final ResultSet rs = st.executeQuery(queryString);
-                ResultSetMetaData rsmd = rs.getMetaData();
+                //Statement st = con.createStatement();
+                //final ResultSet rs = st.executeQuery(queryString);
+                //ResultSetMetaData rsmd = rs.getMetaData();
 
                 //do some things with the data you've retrieved
+                /*
                 while (rs.next()) {
                     queryResult += rsmd.getColumnName(1) + ": " + rs.getString(1) + "\n";
                     queryResult += rsmd.getColumnName(2) + ": " + rs.getString(2) + "\n";
-                }
+                } */
 
-                con.close(); //close database connection
+                //con.close(); //close database connection
             } catch (Exception e) {
                 e.printStackTrace();
                 //put the error into the TextView on the app screen
@@ -114,11 +120,67 @@ public class MainLogInActivity extends AppCompatActivity {
             return null;
         }//end database connection via doInBackground
 
+
+
+
         //after processing is completed, post to the screen
         protected void onPostExecute(Void result) {
             //put the results into the TextView on the app screen
-            getData.setText(queryResult);
+            //getData.setText(queryResult);
 
+        }//End on Post Execute
+
+
+        //Checks Password and Email address if they correspond. Returns true.
+        protected boolean checkPassword(String userEmail, String userPassword){
+            //EditText userEmailInput = (EditText) findViewById(R.id.)
+            //String userEmail =
+            boolean isPassCorrect = false;
+            try{
+                String queryString = "select password from mobileappteam6.users where email = "+userEmail;
+                Statement myStatement = dbConnection.createStatement();
+                final ResultSet myResultSet = myStatement.executeQuery(queryString);
+                while (myResultSet.next()){
+                    if(myResultSet.getString(0).equals(userPassword)){
+                        isPassCorrect = true;
+                        return isPassCorrect;
+                    }
+                }
+            }catch (Exception e){
+                isPassCorrect = false;
+            }
+            return isPassCorrect;
+
+        }//checkPassword
+
+
+        //Closes Connection
+        protected void closeConnection(){
+            try {
+                dbConnection.close();
+                return;
+            }catch (Exception e){
+                e.printStackTrace();
+                return;
+            }
+        }//End close connection
+
+        //Returns true if the Insert is sucessfull
+        protected boolean signUpUser(String userEmail, String userPassword){
+            boolean isInsertSucessfull = false;
+            try{
+                String queryString = "insert into mobileappteam6.users (email, password) " +
+                        "values ("+userEmail+","+userPassword +")";
+                Statement myStatement = dbConnection.createStatement();
+                isInsertSucessfull = myStatement.executeUpdate(queryString) > 0;
+
+            }catch (Exception e){
+                //isPassCorrect = false;
+                isInsertSucessfull =false;
+            }
+            return isInsertSucessfull;
         }
+
     }//end getDataFromDatabase()
-}
+
+}//End MainLogInActivity
