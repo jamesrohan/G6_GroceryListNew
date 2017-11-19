@@ -18,43 +18,49 @@ import java.sql.Statement;
  * Created by Nikki on 11/18/2017.
  */
 
-public class DBConnect   { // extends AsyncTask<Void,Void,Void> extends AsyncTask<Void,Void,Void>
+public class DBConnect   extends AsyncTask<Void,Void,Void>{ // extends AsyncTask<Void,Void,Void> extends AsyncTask<Void,Void,Void>
 
 
-    private static final String database_url = "jdbc:mysql://frankencluster.com:3306/team6rw";
+    private static final String database_url = "jdbc:mysql://frankencluster.com:3306/csc4360_class";
     private static final String database_user = "csc4360dbviewer";
-    private static final String database_pass = "Rohan2017!";
+    private static final String database_pass = ";fw3X2K!a]b,";
     private static boolean ConnectionSucessfull = false;
     private  Connection myConn;
     private Statement mySQL_Statement;
+    private String queryResult;
 
-    protected void connect(){ //Void    doInBackground(Void... arg0)
+    protected Void doInBackground(Void... arg0){ //Void    doInBackground(Void... arg0)
         try {
+            queryResult = "Database connection success\n";
+
             Class.forName("com.mysql.jdbc.Driver");
-            myConn = DriverManager.getConnection(database_url, database_user, database_pass);
-            mySQL_Statement = myConn.createStatement();
-            ConnectionSucessfull = true;
-            Log.d("ConnectionSucessfull", Boolean.toString(ConnectionSucessfull))
-        }catch (Exception e){
+            Connection con = DriverManager.getConnection(database_url, database_user, database_pass);
+            String queryString = "select * from csc4360_class.film limit 5";
+
+            Statement st = con.createStatement();
+            final ResultSet rs = st.executeQuery(queryString);
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            //do some things with the data you've retrieved
+            while (rs.next()) {
+                queryResult += rsmd.getColumnName(1) + ": " + rs.getString(1) + "\n";
+                queryResult += rsmd.getColumnName(2) + ": " + rs.getString(2) + "\n";
+            }
+
+            con.close(); //close database connection
+        } catch (Exception e) {
             e.printStackTrace();
-        }//End Catch
+            //put the error into the TextView on the app screen
+            queryResult = "Database connection failure\n" +  e.toString();
+        }
+        return null;
 
     }//End connect doInBackground
 
 
-    protected void close(){
-        myConn.close();
-        Log.d("DBClosed", "Database Connection Closed");
+    public  String getData(){
+        return queryResult;
     }
-
-
-    public boolean isConnectionSucessfull(){
-        return ConnectionSucessfull;
-    }//End isConnectionSucessfull
-
-
-
-
 
 
 
