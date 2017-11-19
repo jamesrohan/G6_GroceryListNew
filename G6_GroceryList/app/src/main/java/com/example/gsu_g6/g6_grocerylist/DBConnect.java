@@ -18,7 +18,7 @@ import java.sql.Statement;
  * Created by Nikki on 11/18/2017.
  */
 
-public class DBConnect   extends AsyncTask<Void,Void,Void>{ // extends AsyncTask<Void,Void,Void> extends AsyncTask<Void,Void,Void>
+public class DBConnect  { // extends AsyncTask<Void,Void,Void> extends AsyncTask<Void,Void,Void>
 
 
     private static final String database_url = "jdbc:mysql://frankencluster.com:3306/csc4360_class";
@@ -29,7 +29,7 @@ public class DBConnect   extends AsyncTask<Void,Void,Void>{ // extends AsyncTask
     private Statement mySQL_Statement;
     private String queryResult;
 
-    protected Void doInBackground(Void... arg0){ //Void    doInBackground(Void... arg0)
+    protected Void connect(){ //Void    doInBackground(Void... arg0)
         try {
             queryResult = "Database connection success\n";
 
@@ -57,10 +57,6 @@ public class DBConnect   extends AsyncTask<Void,Void,Void>{ // extends AsyncTask
 
     }//End connect doInBackground
 
-
-    public  String getData(){
-        return queryResult;
-    }
 
 
 

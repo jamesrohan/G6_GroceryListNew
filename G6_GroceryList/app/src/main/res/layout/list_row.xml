@@ -3,10 +3,26 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="List Name"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:id="@+id/listName"
-        android:layout_height="30dp"
-        android:textSize="20dp"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="List Name"
+            android:layout_width="wrap_content"
+            android:id="@+id/listName"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Delete"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:id="@+id/button2"
+            android:background="@color/colorRed"/>
+
+    </LinearLayout>
+
 </LinearLayout>
