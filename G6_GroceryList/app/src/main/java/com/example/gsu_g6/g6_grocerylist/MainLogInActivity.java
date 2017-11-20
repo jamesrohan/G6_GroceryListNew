@@ -24,7 +24,7 @@ public class MainLogInActivity extends AppCompatActivity {
     private static final String database_pass = "Rohan2017!";
     private TextView getData;
 
-    //Set these variables before the isPasswordCorrectDB.execute or signUpUserDB.execute is called
+    //Set these variables before the isPasswordCorrectDB.execute  is called
     String userEmail;
     String userPassword;
     //This boolean value is set after you call isPasswordCorrectDB.execute  is called
@@ -33,6 +33,9 @@ public class MainLogInActivity extends AppCompatActivity {
     //This boolean value is set when user hits SignUp and his email is sucessfully inserted in
     // the DB
     boolean isInsertSucessfull = false;
+    // Make sure these variables are set before calling signUpUserDB.execute
+    String userEmail_SignUp;
+    String userPassword_SignUp;
 
 
 
@@ -142,6 +145,7 @@ public class MainLogInActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
                 //put the error into the TextView on the app screen
+                isPassCorrect =false;
                 queryResult = "Database connection failure\n" +  e.toString();
             }
 
@@ -225,7 +229,8 @@ public class MainLogInActivity extends AppCompatActivity {
 
 
 
-    //Used singUpUserDB.execute to singup a  user. userEmail and userPassword must be set before calling/executing
+    //Used singUpUserDB.execute to singup a  user. userEmail_SignUp and userPassword_SignUp
+    // must be set before calling/executing
     private class signUpUserDB extends AsyncTask<Void, Void, Void> {
         private Connection dbConnection2;
         protected Void doInBackground(Void... arg0)  {
@@ -233,9 +238,9 @@ public class MainLogInActivity extends AppCompatActivity {
                 Class.forName("com.mysql.jdbc.Driver");
                 dbConnection2 = DriverManager.getConnection(database_url, database_user, database_pass);
                 //First check if userEmail and userPassword is set
-                if(userEmail.length() > 0 && userPassword.length()>0) {
+                if(userEmail_SignUp.length() > 0 && userPassword_SignUp.length()>0) {
                     String queryString = "insert into mobileappteam6.users (email, password) " +
-                            "values (" + userEmail + "," + userPassword + ")";
+                            "values (" + userEmail_SignUp + "," + userPassword_SignUp + ")";
                     Statement myStatement = dbConnection2.createStatement();
                     isInsertSucessfull = myStatement.executeUpdate(queryString) > 0;
                 }
