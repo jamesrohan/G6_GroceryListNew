@@ -24,6 +24,16 @@ public class MainLogInActivity extends AppCompatActivity {
     private static final String database_pass = "Rohan2017!";
     private TextView getData;
 
+    //Set these variables before the isPasswordCorrectDB.execute or signUpUserDB.execute is called
+    String userEmail;
+    String userPassword;
+    //This boolean value is set after you call isPasswordCorrectDB.execute  is called
+    boolean isPassCorrect = false;
+
+    //This boolean value is set when user hits SignUp and his email is sucessfully inserted in
+    // the DB
+    boolean isInsertSucessfull = false;
+
 
 
     @Override
@@ -31,7 +41,7 @@ public class MainLogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_log_in);
         getData = (TextView) findViewById(R.id.getData);
-        new getDataFromDatabase().execute();
+        //new getDataFromDatabase().execute();
 
 
         Button signup_Button = (Button) findViewById(R.id.button_SignUp);
@@ -84,7 +94,8 @@ public class MainLogInActivity extends AppCompatActivity {
     }
 
 
-    private class getDataFromDatabase extends AsyncTask<Void, Void, Void> {
+    //Must Set userEmail and userPassword before calling this method
+    private class isPasswordCorrectDB extends AsyncTask<Void, Void, Void> {
         //references: http://developer.android.com/reference/android/os/AsyncTask.html
         //            https://www.youtube.com/watch?v=N0FLT5NdSNU (about the 7 min mark)
         private String queryResult;
@@ -111,6 +122,23 @@ public class MainLogInActivity extends AppCompatActivity {
                 } */
 
                 //con.close(); //close database connection
+
+
+                String queryString = "select password from mobileappteam6.users where email = "+userEmail;
+                Statement myStatement = dbConnection.createStatement();
+                final ResultSet myResultSet = myStatement.executeQuery(queryString);
+
+                //First check if userEmail and userPassword is set
+                if(userEmail.length() > 0 && userPassword.length()>0){
+                        while (myResultSet.next()) {
+                            if (myResultSet.getString(0).equals(userPassword)) {
+                                isPassCorrect = true;
+                                //return isPassCorrect;
+                            }
+                        }
+                }//End if
+
+
             } catch (Exception e) {
                 e.printStackTrace();
                 //put the error into the TextView on the app screen
@@ -127,10 +155,17 @@ public class MainLogInActivity extends AppCompatActivity {
         protected void onPostExecute(Void result) {
             //put the results into the TextView on the app screen
             //getData.setText(queryResult);
+            try {
+                dbConnection.close();
+            }catch (Exception e){
+                return;
+            }
 
         }//End on Post Execute
 
 
+
+        /*
         //Checks Password and Email address if they correspond. Returns true.
         protected boolean checkPassword(String userEmail, String userPassword){
             //EditText userEmailInput = (EditText) findViewById(R.id.)
@@ -152,8 +187,10 @@ public class MainLogInActivity extends AppCompatActivity {
             return isPassCorrect;
 
         }//checkPassword
+        */
 
 
+        /*
         //Closes Connection
         protected void closeConnection(){
             try {
@@ -164,7 +201,9 @@ public class MainLogInActivity extends AppCompatActivity {
                 return;
             }
         }//End close connection
+        */
 
+        /*
         //Returns true if the Insert is sucessfull
         protected boolean signUpUser(String userEmail, String userPassword){
             boolean isInsertSucessfull = false;
@@ -180,7 +219,51 @@ public class MainLogInActivity extends AppCompatActivity {
             }
             return isInsertSucessfull;
         }
+        */
 
     }//end getDataFromDatabase()
+
+
+
+    //Used singUpUserDB.execute to singup a  user. userEmail and userPassword must be set before calling/executing
+    private class signUpUserDB extends AsyncTask<Void, Void, Void> {
+        private Connection dbConnection2;
+        protected Void doInBackground(Void... arg0)  {
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+                dbConnection2 = DriverManager.getConnection(database_url, database_user, database_pass);
+                //First check if userEmail and userPassword is set
+                if(userEmail.length() > 0 && userPassword.length()>0) {
+                    String queryString = "insert into mobileappteam6.users (email, password) " +
+                            "values (" + userEmail + "," + userPassword + ")";
+                    Statement myStatement = dbConnection2.createStatement();
+                    isInsertSucessfull = myStatement.executeUpdate(queryString) > 0;
+                }
+            }catch (Exception e){
+                //isPassCorrect = false;
+                isInsertSucessfull =false;
+            }
+            return null;
+        }//End doInBackground
+
+
+
+        protected void onPostExecute(Void result) {
+            //put the results into the TextView on the app screen
+            //getData.setText(queryResult);
+            try {
+                dbConnection2.close();
+            }catch (Exception e){
+                return;
+            }
+
+        }//End on Post Execute
+
+    }//End signUpUserDB
+
+
+
+
+
 
 }//End MainLogInActivity
