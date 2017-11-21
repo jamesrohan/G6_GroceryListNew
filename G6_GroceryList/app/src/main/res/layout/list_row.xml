@@ -19,9 +19,8 @@
         <Button
             android:text="Delete"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:id="@+id/button2"
-            android:background="@color/colorRed"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/button2"/>
 
     </LinearLayout>
 
