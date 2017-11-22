@@ -3,10 +3,40 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="Item Name"
+
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:id="@+id/groupName"
-        android:layout_height="30dp"
-        android:textSize="20dp"/>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:text="Item Name"
+            android:layout_width="wrap_content"
+            android:id="@+id/itemName"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="5dp"
+            android:textColor="@color/system_red"
+            android:background="@color/system_transparent"
+            android:visibility="visible"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:id="@+id/buttonDeleteItem" />
+
+    </LinearLayout>
 </LinearLayout>

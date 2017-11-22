@@ -4,19 +4,37 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <TextView
             android:text="User Name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
+            android:id="@+id/userName"
+            android:layout_height="30dp"
+            android:textSize="20dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="10dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Delete"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/nameList"
-            android:layout_weight="1"
-            android:textSize="30dp"/>
-
-
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="5dp"
+            android:textColor="@color/system_red"
+            android:background="@color/system_transparent"
+            android:visibility="visible"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:id="@+id/buttonDeleteUser" />
 
     </LinearLayout>
 

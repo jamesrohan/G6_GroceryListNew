@@ -8,6 +8,11 @@ public class CustomList {
     private int ListID_PK;
     private String listName;
 
+    CustomList(int listid, String listName){
+        this.ListID_PK = listid;
+        this.listName = listName;
+    }
+
     public void setListID_PK(int x){
         this.ListID_PK = x;
     }
@@ -19,5 +24,7 @@ public class CustomList {
     public int getListID_PK(){
         return this.ListID_PK;
     }
+
+    public String getListName(){ return listName; }
 
 }
